@@ -1,4 +1,5 @@
 import 'package:bloc_implementation/view/product_screen.dart';
+import 'package:bloc_implementation/view/users_view.dart';
 import 'package:flutter/material.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -17,15 +18,23 @@ class _MyHomePageState extends State<MyHomePage> {
         title: const Text("Home"),
       ),
       body: Center(
-        child: ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const ProductView(),
-                  ));
-            },
-            child: const Text("Get Products")),
+        child: Column(
+          children: [
+            const Spacer(),
+            ElevatedButton(
+                onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ProductView())),
+                child: const Text("Get Products")),
+            const Spacer(),
+            ElevatedButton(
+                onPressed: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const UsersView())),
+                child: const Text("Get Usres")),
+            const Spacer(),
+          ],
+        ),
       ),
     );
   }
