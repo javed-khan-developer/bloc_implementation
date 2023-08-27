@@ -24,42 +24,54 @@ class _ProductViewState extends State<ProductView> {
       appBar: AppBar(
         title: const Text("Product"),
       ),
-      body: BlocBuilder<ProductBloc, ProductState>(
-        builder: (context, state) {
-          if (state is ProductLoadingState) {
-            return const Center(
-              child: CircularProgressIndicator.adaptive(),
-            );
-          } else if (state is ProductLoadedState) {
-            return ListView.builder(
-              itemCount: state.productModel.length,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ProductDetails(
-                              product: state.productModel[index]),
-                        ));
-                  },
-                  child: ListTile(
-                    leading:
-                        Text(state.productModel[index].category.toString()),
-                    trailing: Image.network(
-                        state.productModel[index].image.toString()),
-                    subtitle: Text(
-                        state.productModel[index].rating?.rate.toString() ??
-                            "NA"),
-                  ),
-                );
-              },
-            );
+      // body: BlocBuilder<ProductBloc, ProductState>(
+      //   builder: (context, state) {
+      //     if (state is ProductLoadingState) {
+      //       return const Center(
+      //         child: CircularProgressIndicator.adaptive(),
+      //       );
+      //     } else if (state is ProductLoadedState) {
+      //       return ListView.builder(
+      //         itemCount: state.productModel.length,
+      //         itemBuilder: (context, index) {
+      //           return GestureDetector(
+      //             onTap: () {
+      //               Navigator.push(
+      //                   context,
+      //                   MaterialPageRoute(
+      //                     builder: (context) => ProductDetails(
+      //                         product: state.productModel[index]),
+      //                   ));
+      //             },
+      //             child: ListTile(
+      //               leading:
+      //                   Text(state.productModel[index].category.toString()),
+      //               trailing: Image.network(
+      //                   state.productModel[index].image.toString()),
+      //               subtitle: Text(
+      //                   state.productModel[index].rating?.rate.toString() ??
+      //                       "NA"),
+      //             ),
+      //           );
+      //         },
+      //       );
+      //     } else if (state is ProductErrorState) {
+      //       return Text(state.errorMessage);
+      //     }
+      //     return const SizedBox();
+      //   },
+      // ),
+      body: BlocListener<ProductBloc, ProductState>(
+        listener: (context, state) {
+          if (state is ProductLoadedState) {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text("Product Loaded...")));
           } else if (state is ProductErrorState) {
-            return Text(state.errorMessage);
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text("Product Failed to Load...")));
           }
-          return const SizedBox();
         },
+        child: Container(),
       ),
     );
   }
