@@ -3,9 +3,11 @@ import 'package:bloc_implementation/repository/product_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'debug/bloc_observer.dart';
 import 'view/home_view.dart';
 
 void main() {
+  Bloc.observer = MyBlocObserver();
   runApp(RepositoryProvider(
     create: (context) => ProductRepository(),
     child: const MyApp(),

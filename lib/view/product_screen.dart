@@ -1,7 +1,8 @@
 import 'package:bloc_implementation/bloc/product_bloc.dart';
-import 'package:bloc_implementation/view/product_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'product_detail_view.dart';
 
 class ProductView extends StatefulWidget {
   const ProductView({super.key});
