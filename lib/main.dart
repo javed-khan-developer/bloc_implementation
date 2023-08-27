@@ -1,17 +1,28 @@
-import 'package:bloc_implementation/bloc/product_bloc.dart';
-import 'package:bloc_implementation/repository/product_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'bloc/product_bloc.dart';
+import 'cubit/users_cubit.dart';
 import 'debug/bloc_observer.dart';
+import 'repository/product_repository.dart';
+import 'repository/users_repository.dart';
 import 'view/home_view.dart';
 
 void main() {
   Bloc.observer = MyBlocObserver();
-  runApp(RepositoryProvider(
-    create: (context) => ProductRepository(),
-    child: const MyApp(),
-  ));
+  runApp(
+    MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(
+          create: (context) => ProductRepository(),
+        ),
+        RepositoryProvider(
+          create: (context) => UserRepository(),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -19,8 +30,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ProductBloc(ProductRepository()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => ProductBloc(
+            ProductRepository(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => UsersCubit(
+            UserRepository(),
+          ),
+        ),
+      ],
       child: MaterialApp(
         title: 'Flutter Bloc',
         theme: ThemeData(
